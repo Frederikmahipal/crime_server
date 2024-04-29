@@ -8,7 +8,7 @@ const port = 3000;
 
 app.use(express.json());
 
-//5 secs
+
 cron.schedule('* * * * * *', () => {
     let crime = generateCrime();
     axios.post('http://localhost:8000/get-crimes', crime)

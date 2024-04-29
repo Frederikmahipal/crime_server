@@ -28,7 +28,8 @@ function generateSuspect() {
         "id": faker.datatype.uuid(), 
         "cpr": faker.datatype.number({ min: 100, max: 999 }),
         "name": faker.name.findName(),
-        "crimesInvolved": 0 
+
+        "last_seen_at": faker.address.streetAddress()
     };
 }
 
@@ -50,13 +51,11 @@ function generateCrime() {
     const numSuspects = faker.datatype.number({ min: 1, max: 3 });
 
     const suspects = [];
-    for (let j = 0; j < numSuspects; j++) {
+    for (let i = 0; i < numSuspects; i++) {
         if (suspectPool.length > 0) {
             const suspectIndex = faker.datatype.number({ min: 0, max: suspectPool.length - 1 });
             const suspect = suspectPool[suspectIndex];
-            suspects.push(suspect);
-            suspect.crimesInvolved++;
-            
+            suspects.push(suspect);            
         } else {
             const newSuspect = generateSuspect();
             suspects.push(newSuspect);
@@ -75,7 +74,8 @@ function generateCrime() {
         "category": crimeType.category,
         "description": faker.lorem.sentence(),
         "suspects": suspects,
-        "crimeScene": crimeScene
+        "crimeScene": crimeScene,
+        "reported_at": faker.date.recent().toISOString()
     };
 }
 
