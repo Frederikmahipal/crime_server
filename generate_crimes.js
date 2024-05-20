@@ -28,7 +28,6 @@ function generateSuspect() {
         "id": faker.datatype.uuid(), 
         "cpr": faker.datatype.number({ min: 100, max: 999 }),
         "name": faker.name.findName(),
-
         "last_seen_at": faker.address.streetAddress()
     };
 }

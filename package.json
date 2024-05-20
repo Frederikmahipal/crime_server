@@ -3,6 +3,7 @@
     "axios": "^1.6.8",
     "express": "^4.19.2",
     "faker": "^5.5.3",
+    "jsonwebtoken": "^9.0.2",
     "node-cron": "^3.0.3"
   },
   "devDependencies": {
