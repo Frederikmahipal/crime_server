@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const jwt = require('jsonwebtoken');
@@ -14,9 +15,8 @@ app.get('/get-crimes', (req, res) => {
 
     if (authHeader) {
         const token = authHeader.split(' ')[1];
-
-        // Verify the token
-        jwt.verify(token, 'secret-key', (err) => {
+        const secretKey = process.env.JWT_SECRET;
+        jwt.verify(token, secretKey, (err) => {
             if (err) {
                 return res.status(403).json({ error: 'Invalid token' });
             }
@@ -28,10 +28,18 @@ app.get('/get-crimes', (req, res) => {
     }
 });
 
+//triggered by cronjob
 app.get('/update-crimes', (req, res) => {
     const newCrime = generateCrime();
     crimes.push(newCrime);
     res.status(200).json({ message: 'Crimes updated successfully' });
+});
+
+
+//delete tha data on the endpoint
+app.get('/delete-crimes', (req, res) => {
+    crimes = [];
+    res.status(200).json({ message: 'all crimes deleted' });
 });
 
 app.listen(port, () => {
