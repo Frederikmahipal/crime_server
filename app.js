@@ -1,24 +1,12 @@
 const express = require('express');
 const app = express();
-const cron = require('node-cron');
-const axios = require('axios');
-const generateCrime = require('./generate_crimes');
 const jwt = require('jsonwebtoken');
-
+const generateCrime = require('./generate_crimes');
 
 const port = 3000;
 
 app.use(express.json());
-
 let crimes = [];
-
-// Generate a new crime every 5 seconds
-
-cron.schedule('0 */3 * * *', () => {
-    let crime = generateCrime();
-    console.log('generated crime');
-    crimes.push(crime);
-});
 
 // Endpoint to get all crimes
 app.get('/get-crimes', (req, res) => {
@@ -40,21 +28,12 @@ app.get('/get-crimes', (req, res) => {
     }
 });
 
-/*
-cron.schedule('* * * * * *', () => {
-    let crime = generateCrime();
-    axios.post('http://localhost:8000/get-crimes', crime)
-        .then(res => {
-            console.log(`Status: ${res.status}`);
-            console.log('Body: ', res.data);
-        }).catch(err => {
-            console.error(err);
-        });
+app.get('/update-crimes', (req, res) => {
+    const newCrime = generateCrime();
+    crimes.push(newCrime);
+    res.status(200).json({ message: 'Crimes updated successfully' });
 });
-*/
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
-}); 
-
-
+});
