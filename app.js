@@ -9,10 +9,8 @@ const port = 3000;
 app.use(express.json());
 let crimes = [];
 
-// Endpoint to get all crimes
 app.get('/get-crimes', (req, res) => {
     const authHeader = req.headers.authorization;
-
     if (authHeader) {
         const token = authHeader.split(' ')[1];
         const secretKey = process.env.JWT_SECRET;
@@ -20,7 +18,6 @@ app.get('/get-crimes', (req, res) => {
             if (err) {
                 return res.status(403).json({ error: 'Invalid token' });
             }
-
             res.json(crimes);
         });
     } else {
@@ -28,7 +25,6 @@ app.get('/get-crimes', (req, res) => {
     }
 });
 
-//triggered by cronjob
 app.get('/update-crimes', (req, res) => {
     const newCrime = generateCrime();
     crimes.push(newCrime);
@@ -36,7 +32,6 @@ app.get('/update-crimes', (req, res) => {
 });
 
 
-//delete tha data on the endpoint
 app.get('/delete-crimes', (req, res) => {
     crimes = [];
     res.status(200).json({ message: 'all crimes deleted' });
@@ -45,3 +40,10 @@ app.get('/delete-crimes', (req, res) => {
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
+
+
+// cron.schedule('*/5 * * *', () => {
+//     let crime = generateCrime();
+//     console.log('generated crime');
+//     crimes.push(crime);
+// }); 
